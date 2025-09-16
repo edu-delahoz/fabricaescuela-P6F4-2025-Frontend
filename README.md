@@ -77,7 +77,11 @@ Este módulo es desarrollado en el marco de la Fábrica Escuela 2025-2.
 **Integrantes del equipo:**
 - Eduardo de la Hoz
 - Sarah
+---
 
+## Preview 
+
+https://fabricaescuela-p6-f4-2025-frontend.vercel.app/
 ---
 
 ## 📄 Licencia
