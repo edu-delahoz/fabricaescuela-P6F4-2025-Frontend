@@ -138,3 +138,50 @@
 .transport-bg {
   background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
 }
+
+/* Asegurar que los dropdowns sean visibles */
+[data-radix-popper-content-wrapper] {
+  z-index: 9999 !important;
+  position: relative !important;
+}
+
+[data-slot="dropdown-menu-content"] {
+  z-index: 9999 !important;
+  background: white !important;
+  border: 1px solid #e5e7eb !important;
+  border-radius: 6px !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05) !important;
+  min-width: 120px !important;
+  max-height: 200px !important;
+  overflow-y: auto !important;
+  position: absolute !important;
+}
+
+[data-slot="dropdown-menu-item"] {
+  pointer-events: auto !important;
+  position: relative !important;
+  display: block !important;
+  padding: 8px 12px !important;
+  cursor: pointer !important;
+  transition: background-color 0.2s !important;
+}
+
+[data-slot="dropdown-menu-item"]:hover {
+  background-color: #f3f4f6 !important;
+}
+
+/* Asegurar que el contenedor padre no oculte el dropdown */
+.max-w-6xl {
+  overflow: visible !important;
+}
+
+/* Asegurar que todos los contenedores permitan overflow */
+.min-h-screen, .bg-gray-50 {
+  overflow: visible !important;
+}
+
+/* Contenedor específico para la página de gestión */
+body {
+  overflow-x: visible !important;
+  overflow-y: auto !important;
+}

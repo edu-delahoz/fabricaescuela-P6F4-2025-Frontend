@@ -153,7 +153,7 @@ export default function ManagementPage() {
                         <ChevronDown className="h-4 w-4" />
                       </Button>
                     </DropdownMenuTrigger>
-                    <DropdownMenuContent>
+                    <DropdownMenuContent align="end" sideOffset={5}>
                       <DropdownMenuItem onClick={() => updateShipmentStatus(shipment.id, "En Ruta")}>
                         En Ruta
                       </DropdownMenuItem>
