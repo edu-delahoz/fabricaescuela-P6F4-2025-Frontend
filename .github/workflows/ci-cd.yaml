@@ -1,4 +1,4 @@
-name: CI/CD
+name: CourierSync - feature 1
 
 on: 
   push:
