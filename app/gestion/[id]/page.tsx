@@ -1,15 +1,11 @@
-"use client"
-
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
 import Link from "next/link"
 
 interface PackageDetailProps {
-  params: Promise<{ id: string }>
+  params: { id: string }
 }
 
-// Mock data - in a real app, this would come from an API or database
 const getPackageData = (id: string) => {
   return {
     id: id,
@@ -63,9 +59,8 @@ const getStatusColor = (status: string) => {
   }
 }
 
-export default async function PackageDetailPage({ params }: PackageDetailProps) {
-  const resolvedParams = await params
-  const packageData = getPackageData(resolvedParams.id)
+export default function PackageDetailPage({ params }: PackageDetailProps) {
+  const packageData = getPackageData(params.id)
 
   return (
     <div className="min-h-screen bg-gray-50">
