@@ -14,7 +14,7 @@ const inter = Inter({
 export const metadata: Metadata = {
   title: "Sistema de Transporte",
   description: "Aplicación para rastreo y gestión de envíos",
-  generator: "v0.app",
+    generator: 'v0.app'
 }
 
 export default function RootLayout({
