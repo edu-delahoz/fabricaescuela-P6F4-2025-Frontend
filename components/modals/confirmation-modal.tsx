@@ -7,13 +7,18 @@ interface ConfirmationModalProps {
   onClose: () => void
   title: string
   message: string
-  type?: "success" | "error"
+  type?: "success" | "error" | "warning"
 }
 
 export function ConfirmationModal({ isOpen, onClose, title, message, type = "success" }: ConfirmationModalProps) {
   if (!isOpen) return null
 
-  const buttonColor = type === "success" ? "bg-blue-600 hover:bg-blue-700" : "bg-red-600 hover:bg-red-700"
+  const buttonColor =
+    type === "success"
+      ? "bg-blue-600 hover:bg-blue-700"
+      : type === "error"
+        ? "bg-red-600 hover:bg-red-700"
+        : "bg-amber-600 hover:bg-amber-700"
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">

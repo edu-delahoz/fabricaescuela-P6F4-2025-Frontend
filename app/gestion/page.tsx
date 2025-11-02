@@ -5,21 +5,21 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Card, CardContent } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
-import { Search, ChevronDown } from "lucide-react"
+import { Search } from "lucide-react"
 import Link from "next/link"
-import { NavHeader } from "@/components/navigation/nav-header"
+import { useRouter } from "next/navigation"
 import { ConfirmationModal } from "@/components/modals/confirmation-modal"
 
 interface Shipment {
   id: string
   guideNumber: string
-  customerName: string
+  sendDate: string
   lastUpdate: string
   status: "En Ruta" | "En Bodega" | "Entregado"
 }
 
 export default function ManagementPage() {
+  const router = useRouter()
   const [searchTerm, setSearchTerm] = useState("")
   const [showSuccess, setShowSuccess] = useState(false)
   const [showError, setShowError] = useState(false)
@@ -27,52 +27,41 @@ export default function ManagementPage() {
     {
       id: "1",
       guideNumber: "12345678901",
-      customerName: "María González",
-      lastUpdate: "15/01/2025",
+      sendDate: "2025-05-10",
+      lastUpdate: "15/05/2025",
       status: "En Ruta",
     },
     {
       id: "2",
       guideNumber: "12345678902",
-      customerName: "María González",
-      lastUpdate: "15/01/2025",
+      sendDate: "2025-05-10",
+      lastUpdate: "15/05/2025",
       status: "En Bodega",
     },
     {
       id: "3",
       guideNumber: "12345678903",
-      customerName: "María González",
-      lastUpdate: "15/01/2025",
+      sendDate: "2025-05-10",
+      lastUpdate: "15/05/2025",
       status: "Entregado",
     },
     {
       id: "4",
       guideNumber: "12345678904",
-      customerName: "María González",
-      lastUpdate: "15/01/2025",
+      sendDate: "2025-05-10",
+      lastUpdate: "15/05/2025",
       status: "Entregado",
     },
     {
       id: "5",
       guideNumber: "12345678905",
-      customerName: "María González",
-      lastUpdate: "15/01/2025",
+      sendDate: "2025-05-10",
+      lastUpdate: "15/05/2025",
       status: "Entregado",
     },
   ])
 
-  const updateShipmentStatus = (id: string, newStatus: "En Ruta" | "En Bodega" | "Entregado") => {
-    setShipments((prev) =>
-      prev.map((shipment) =>
-        shipment.id === id
-          ? { ...shipment, status: newStatus, lastUpdate: new Date().toLocaleDateString("es-ES") }
-          : shipment,
-      ),
-    )
-  }
-
   const handleSaveChanges = () => {
-    // Simular éxito o error aleatoriamente
     const isSuccess = Math.random() > 0.3
     if (isSuccess) {
       setShowSuccess(true)
@@ -94,25 +83,19 @@ export default function ManagementPage() {
     }
   }
 
-  const filteredShipments = shipments.filter(
-    (shipment) =>
-      shipment.guideNumber.includes(searchTerm) ||
-      shipment.customerName.toLowerCase().includes(searchTerm.toLowerCase()),
-  )
+  const filteredShipments = shipments.filter((shipment) => shipment.guideNumber.includes(searchTerm))
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <NavHeader />
-
-      {/* Header con gradiente azul */}
-      <div className="transport-bg text-white py-16 px-4">
+      {/* Blue banner with title - more compact */}
+      <div className="bg-blue-600 text-white py-6 px-4">
         <div className="max-w-6xl mx-auto text-center">
-          <h1 className="transport-title text-white mb-8">GESTIÓN DE ESTADO DE PAQUETES</h1>
+          <h1 className="text-3xl font-bold tracking-wide">GESTIÓN DE PAQUETES</h1>
         </div>
       </div>
 
       {/* Contenido principal */}
-      <div className="max-w-6xl mx-auto p-6 -mt-8">
+      <div className="max-w-6xl mx-auto p-6">
         <Card className="mb-6">
           <CardContent className="p-6">
             {/* Barra de búsqueda */}
@@ -140,32 +123,30 @@ export default function ManagementPage() {
                   <div key={shipment.id} className="flex items-center justify-between p-4 border rounded-lg bg-white">
                     <div className="flex items-center gap-4">
                       <div>
-                        <p className="font-semibold">{shipment.guideNumber}</p>
-                        <p className="text-sm text-gray-600">{shipment.customerName}</p>
+                        <div className="flex items-center gap-3 mb-1">
+                          <p className="font-semibold">{shipment.guideNumber}</p>
+                          <Badge className={`${getStatusColor(shipment.status)} border`}>{shipment.status}</Badge>
+                        </div>
+                        <p className="text-sm text-gray-600">Fecha de envío: {shipment.sendDate}</p>
                         <p className="text-sm text-gray-500">Actualizado: {shipment.lastUpdate}</p>
                       </div>
-                      <Badge className={`${getStatusColor(shipment.status)} border`}>{shipment.status}</Badge>
                     </div>
 
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="flex items-center gap-2 bg-transparent">
-                          Actualizar Estado
-                          <ChevronDown className="h-4 w-4" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" sideOffset={5}>
-                        <DropdownMenuItem onClick={() => updateShipmentStatus(shipment.id, "En Ruta")}>
-                          En Ruta
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => updateShipmentStatus(shipment.id, "En Bodega")}>
-                          En Bodega
-                        </DropdownMenuItem>
-                        <DropdownMenuItem onClick={() => updateShipmentStatus(shipment.id, "Entregado")}>
-                          Entregado
-                        </DropdownMenuItem>
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                    <div className="flex gap-3">
+                      <Button
+                        variant="ghost"
+                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        onClick={() => router.push(`/gestion/${shipment.id}`)}
+                      >
+                        Consultar
+                      </Button>
+                      <Button
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        onClick={() => router.push(`/gestion/${shipment.id}/editar`)}
+                      >
+                        Actualizar información
+                      </Button>
+                    </div>
                   </div>
                 ))
               ) : (
@@ -173,31 +154,24 @@ export default function ManagementPage() {
                   <div className="mx-auto w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mb-4">
                     <Search className="h-12 w-12 text-gray-400" />
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    No se encontraron paquetes
-                  </h3>
+                  <h3 className="text-lg font-semibold text-gray-900 mb-2">No se encontraron paquetes</h3>
                   <p className="text-gray-600 mb-4">
-                    {searchTerm 
+                    {searchTerm
                       ? `No se encontraron paquetes que coincidan con "${searchTerm}"`
-                      : "No hay paquetes disponibles en este momento"
-                    }
+                      : "No hay paquetes disponibles en este momento"}
                   </p>
-                  {searchTerm && (
-                    <p className="text-sm text-gray-500">
-                      Intenta buscar por número de guía o nombre del cliente
-                    </p>
-                  )}
+                  {searchTerm && <p className="text-sm text-gray-500">Intenta buscar por número de guía</p>}
                 </div>
               )}
             </div>
 
             {/* Botones de acción */}
             <div className="flex justify-center gap-4 mt-8">
-              <Button onClick={handleSaveChanges} className="bg-blue-600 hover:bg-blue-700 text-white px-8">
+              <Button onClick={handleSaveChanges} className="bg-slate-700 hover:bg-slate-800 text-white px-8">
                 Guardar Cambios
               </Button>
               <Link href="/">
-                <Button variant="outline" className="px-8 bg-transparent">
+                <Button variant="outline" className="px-8 bg-gray-200 hover:bg-gray-300">
                   Salir
                 </Button>
               </Link>

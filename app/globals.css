@@ -139,6 +139,9 @@
   background: linear-gradient(135deg, #4f46e5 0%, #3b82f6 100%);
 }
 
+<<<<<<< HEAD
+/* Removed problematic dropdown positioning styles that were trying to fix Radix UI issues */
+=======
 /* Asegurar que los dropdowns sean visibles */
 [data-radix-popper-content-wrapper] {
   z-index: 9999 !important;
@@ -185,3 +188,4 @@ body {
   overflow-x: visible !important;
   overflow-y: auto !important;
 }
+>>>>>>> origin/main

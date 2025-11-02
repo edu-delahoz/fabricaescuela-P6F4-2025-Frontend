@@ -1,6 +1,6 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Package, Settings } from "lucide-react"
+import { Package, Settings, LayoutDashboard, Archive } from "lucide-react"
 
 export function NavHeader() {
   return (
@@ -13,6 +13,12 @@ export function NavHeader() {
           </div>
 
           <div className="flex items-center gap-4">
+            <Link href="/dashboard">
+              <Button variant="ghost" className="flex items-center gap-2">
+                <LayoutDashboard className="h-4 w-4" />
+                Dashboard
+              </Button>
+            </Link>
             <Link href="/">
               <Button variant="ghost" className="flex items-center gap-2">
                 <Package className="h-4 w-4" />
@@ -23,6 +29,12 @@ export function NavHeader() {
               <Button variant="ghost" className="flex items-center gap-2">
                 <Settings className="h-4 w-4" />
                 Gestión de Estados
+              </Button>
+            </Link>
+            <Link href="/inventario">
+              <Button variant="ghost" className="flex items-center gap-2">
+                <Archive className="h-4 w-4" />
+                Inventario
               </Button>
             </Link>
           </div>
