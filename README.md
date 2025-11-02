@@ -1,30 +1,89 @@
-# fabricaescuelaP6F42025Frontendmain
+# Fabrica Escuela – Proyecto 6 (Feature 4) – Frontend
 
-*Automatically synced with your [v0.app](https://v0.app) deployments*
+CourierSync es una plataforma web para optimizar los procesos logísticos de transporte y distribución.
 
-[![Deployed on Vercel](https://img.shields.io/badge/Deployed%20on-Vercel-black?style=for-the-badge&logo=vercel)](https://vercel.com/eduardo-de-la-hozs-projects/v0-fabricaescuela-p6-f42025-frontendm-ze)
-[![Built with v0](https://img.shields.io/badge/Built%20with-v0.app-black?style=for-the-badge)](https://v0.app/chat/CkUy2ig6bJB)
+Este repositorio corresponde al **Frontend** de la Feature 4: **Control de Inventario en Tránsito**, cuyo objetivo es monitorear los paquetes en todas las etapas del transporte, minimizando pérdidas y errores mediante una interfaz amigable y eficiente para los usuarios.
 
-## Overview
+---
 
-This repository will stay in sync with your deployed chats on [v0.app](https://v0.app).
-Any changes you make to your deployed app will be automatically pushed to this repository from [v0.app](https://v0.app).
+## 🚀 Tecnologías utilizadas
 
-## Deployment
+- **NextJs**  
+- **TailwindCSS**  
+- **Git & GitHub**  
 
-Your project is live at:
+---
 
-**[https://vercel.com/eduardo-de-la-hozs-projects/v0-fabricaescuela-p6-f42025-frontendm-ze](https://vercel.com/eduardo-de-la-hozs-projects/v0-fabricaescuela-p6-f42025-frontendm-ze)**
+## 🔀 Estrategia de ramas
 
-## Build your app
+El flujo colaborativo del proyecto se basa en una estrategia simplificada inspirada en Git Flow:
 
-Continue building your app on:
+- **main** → Rama estable con el código listo para entrega o demos.
+- **develop** → Rama de integración donde se fusionan las historias de usuario (HU) desarrolladas en el frontend.
+- **hu/**... → Ramas individuales para cada historia de usuario.
+- **feature/**... → Ramas para componentes reutilizables o funcionalidades generales.
+- **hotfix/**... → Ramas para correcciones urgentes directamente en main.
 
-**[https://v0.app/chat/CkUy2ig6bJB](https://v0.app/chat/CkUy2ig6bJB)**
+**Ejemplos de ramas:**
+- `hu/rastreo-envio-cliente`
+- `hu/gestion-estado-paquetes`
+- `hu/interfaz-consulta-informacion`
+- `feature/componentes-base`
+- `feature/navegacion-principal`
+- `hotfix/correccion-bug-rastreo`
 
-## How It Works
+**Buenas prácticas:**
+- Cada integrante trabaja en su propia rama `hu/...` y realiza un Pull Request hacia `develop`.
+- Las ramas `feature/...` se utilizan para funcionalidades generales que serán usadas en varias HU (ej: componentes base, navegación principal).
+- Los hotfix se aplican sobre main y luego se fusionan en develop.
+- Al finalizar el sprint, **develop** se integra en **main**.
 
-1. Create and modify your project using [v0.app](https://v0.app)
-2. Deploy your chats from the v0 interface
-3. Changes are automatically pushed to this repository
-4. Vercel deploys the latest version from this repository
+---
+
+## 📦 Estructura del proyecto
+
+```
+app/                # Vistas principales y rutas Next.js (pages, layouts, templates)
+components/         # Componentes reutilizables
+hooks/              # Custom hooks
+lib/                # Funciones utilitarias y lógica compartida
+public/             # Archivos estáticos (imágenes, favicon, etc)
+styles/             # Archivos de estilos globales (Tailwind, CSS)
+components.json     # Configuración de componentes
+next.config.mjs     # Configuración de Next.js
+package.json        # Dependencias y scripts del proyecto
+postcss.config.mjs  # Configuración de PostCSS
+tsconfig.json       # Configuración de TypeScript
+```
+
+---
+
+## 🛠 Instalación y ejecución
+
+1. Clona el repositorio:  
+   `git clone https://github.com/edu-delahoz/fabricaescuela-P6F4-2025-Frontend.git`
+2. Instala las dependencias:  
+   `npm install`
+3. Ejecuta el proyecto en modo desarrollo:  
+   `npm run dev`
+
+
+---
+
+## 👥 Equipo
+
+Este módulo es desarrollado en el marco de la Fábrica Escuela 2025-2.
+
+**Integrantes del equipo:**
+- Eduardo de la Hoz
+- Sarah
+---
+
+## Preview 
+
+https://fabricaescuela-p6-f4-2025-frontend.vercel.app/
+---
+
+## 📄 Licencia
+
+Este proyecto es de uso académico y colaborativo en el marco de la Fábrica Escuela.
