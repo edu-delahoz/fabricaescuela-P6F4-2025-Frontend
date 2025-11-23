@@ -25,13 +25,12 @@ export class ApiClient {
       ...options.headers,
     };
 
-    // Agregar token de autenticación si está disponible
     if (token) {
-      headers["Authorization"] = `Bearer ${token}`;
+      (headers as any)["Authorization"] = `Bearer ${token}`;
     }
 
-    const url = endpoint.startsWith("http") 
-      ? endpoint 
+    const url = endpoint.startsWith("http")
+      ? endpoint
       : `${this.baseURL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
 
     const response = await fetch(url, {
@@ -39,13 +38,11 @@ export class ApiClient {
       headers,
     });
 
-    // Si el token expiró, intentar renovarlo
     if (response.status === 401) {
       const newToken = await AuthService.refreshAccessToken();
-      
+
       if (newToken) {
-        // Reintentar la petición con el nuevo token
-        headers["Authorization"] = `Bearer ${newToken}`;
+        (headers as any)["Authorization"] = `Bearer ${newToken}`;
         const retryResponse = await fetch(url, {
           ...options,
           headers,
@@ -57,7 +54,6 @@ export class ApiClient {
 
         return retryResponse.json();
       } else {
-        // Si no se pudo renovar, redirigir al login
         if (typeof window !== "undefined") {
           window.location.href = "/login";
         }
@@ -148,14 +144,29 @@ export const packageService = {
     if (codigo) {
       return apiClient.get<any>(`/paquetes/en-ruta/${codigo}`);
     }
-    return apiClient.get<any[]>("/paquetes/en-ruta");
+    return apiClient.get<any[]>("/paquetes/en-transito");
+  },
+
+  /**
+   * Buscar paquetes por criterios
+   */
+  search: (criteria: {
+    codigoPaquete?: string;
+    fechaRegistro?: string;
+    nombreEstado?: string;
+  }) => {
+    const params = new URLSearchParams();
+    if (criteria.codigoPaquete) params.append("codigoPaquete", criteria.codigoPaquete);
+    if (criteria.fechaRegistro) params.append("fechaRegistro", criteria.fechaRegistro);
+    if (criteria.nombreEstado) params.append("nombreEstado", criteria.nombreEstado);
+    return apiClient.get<any>(`/paquetes/buscar?${params.toString()}`);
   },
 
   /**
    * Actualizar dirección de un paquete en ruta
    */
   updateDireccion: (codigo: string, data: {
-    direccion?: string;
+    destino?: string;
     destinatario?: string;
   }) => apiClient.put<any>(`/paquetes/en-ruta/${codigo}/direccion`, data),
 
@@ -171,7 +182,7 @@ export const packageService = {
   /**
    * Obtener historial de ubicaciones
    */
-  getUbicaciones: (codigoPaquete: string) => 
+  getUbicaciones: (codigoPaquete: string) =>
     apiClient.get<any[]>(`/paquetes/${codigoPaquete}/ubicaciones`),
 
   /**
@@ -181,28 +192,69 @@ export const packageService = {
     apiClient.get<any>(`/paquetes/${codigoPaquete}/ubicaciones/ultima`),
 };
 
+
 /**
  * Servicio para novedades
  */
 export const novedadService = {
-  /**
-   * Obtener todas las novedades
-   */
   getAll: () => apiClient.get<any[]>("/novedades"),
 
-  /**
-   * Crear una novedad
-   */
+  getById: (id: number) => apiClient.get<any>(`/novedades/${id}`),
+
+
   create: (data: {
-    codigoPaquete: string;
+    idPaquete: number;
     descripcion: string;
-    tipo?: string;
-  }) => apiClient.post<any>("/novedades", data),
+    tipoNovedad: string;
+    fechaHora: string;
+  }) => apiClient.post<any>("/novedades", {
+    idPaquete: { id: data.idPaquete },
+    tipoNovedad: data.tipoNovedad,
+    descripcion: data.descripcion,
+    fechaHora: data.fechaHora
+  }),
+
+
+  update: (id: number, data: any) => apiClient.put<any>(`/novedades/${id}`, data),
+
+  /**
+   * Eliminar una novedad
+   */
+  delete: (id: number) => apiClient.delete<void>(`/novedades/${id}`),
 
   /**
    * Obtener novedades de un paquete
    */
-  getByPaquete: (codigoPaquete: string) =>
-    apiClient.get<any[]>(`/novedades?paquete=${codigoPaquete}`),
+  getByPaquete: (idPaquete: number) =>
+    apiClient.get<any[]>(`/novedades/paquete/${idPaquete}`),
 };
 
+export const estadoService = {
+  getAll: () => apiClient.get<any[]>("/estados"),
+  getById: (id: number) => apiClient.get<any>(`/estados/${id}`),
+  create: (data: any) => apiClient.post<any>("/estados", data),
+  update: (id: number, data: any) => apiClient.put<any>(`/estados/${id}`, data),
+  delete: (id: number) => apiClient.delete<void>(`/estados/${id}`),
+};
+
+/**
+ * Servicio para historial de estados
+ */
+export const historialEstadoService = {
+  getAll: () => apiClient.get<any[]>("/historial-estados"),
+  getById: (id: number) => apiClient.get<any>(`/historial-estados/${id}`),
+  getByPaquete: (idPaquete: number) => apiClient.get<any[]>(`/historial-estados/paquete/${idPaquete}`),
+  create: (data: {
+    idPaquete: number;
+    idEstado: number;
+    idEmpleado: number;
+    fechaHora: string;
+  }) => apiClient.post<any>("/historial-estados", {
+    idPaquete: { id: data.idPaquete },
+    idEstado: { id: data.idEstado },
+    idEmpleado: { id: data.idEmpleado },
+    fechaHora: data.fechaHora
+  }),
+  update: (id: number, data: any) => apiClient.put<any>(`/historial-estados/${id}`, data),
+  delete: (id: number) => apiClient.delete<void>(`/historial-estados/${id}`),
+};

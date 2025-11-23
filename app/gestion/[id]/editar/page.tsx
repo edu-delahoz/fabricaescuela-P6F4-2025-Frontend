@@ -1,13 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter, useParams } from "next/navigation";
 import { ConfirmationModal } from "@/components/modals/confirmation-modal";
-import { packageService } from "@/lib/api-client";
+import { packageService, historialEstadoService, estadoService } from "@/lib/api-client";
 
 export default function EditPackagePage() {
   const router = useRouter();
@@ -18,6 +18,39 @@ export default function EditPackagePage() {
   const [showWarning, setShowWarning] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [isSavingUbicacion, setIsSavingUbicacion] = useState(false);
+  const [isSavingDireccion, setIsSavingDireccion] = useState(false);
+  const [isSavingEstado, setIsSavingEstado] = useState(false);
+  
+  // Data state
+  const [paqueteId, setPaqueteId] = useState<number | null>(null);
+  const [estados, setEstados] = useState<any[]>([]);
+  const [loadingData, setLoadingData] = useState(true);
+
+  useEffect(() => {
+    const loadData = async () => {
+        try {
+            // Load package details to get ID
+            const pkg = await packageService.getByCode(codigoPaquete);
+            if (pkg) {
+                setPaqueteId(pkg.id);
+            }
+
+            // Load states
+            const states = await estadoService.getAll();
+            setEstados(states);
+        } catch (error) {
+            console.error("Error loading data:", error);
+            setErrorMessage("Error al cargar la información del paquete.");
+            setShowError(true);
+        } finally {
+            setLoadingData(false);
+        }
+    };
+
+    if (codigoPaquete) {
+        loadData();
+    }
+  }, [codigoPaquete]);
 
   // Location update state
   const [paso, setPaso] = useState("");
@@ -90,20 +123,61 @@ export default function EditPackagePage() {
     }
   };
 
-  const handleGuardarDireccion = () => {
+  const handleGuardarDireccion = async () => {
     if (!numero || !barrio) {
       setShowWarning(true);
       return;
     }
-    setShowSuccess(true);
+
+    setIsSavingDireccion(true);
+    setShowError(false);
+    setShowSuccess(false);
+
+    try {
+        const parts = [via, numero, tramo, orientacion, cruce, metros].filter(Boolean);
+        const direccion = parts.join(" ");
+        const direccionCompleta = `${direccion}, ${barrio}`;
+
+        await packageService.updateDireccion(codigoPaquete, {
+            destino: direccionCompleta
+        });
+
+        setShowSuccess(true);
+    } catch (error) {
+        console.error("Error updating address:", error);
+        setErrorMessage("Error al actualizar la dirección. Por favor intente de nuevo.");
+        setShowError(true);
+    } finally {
+        setIsSavingDireccion(false);
+    }
   };
 
-  const handleGuardarEstado = () => {
-    if (!nuevoEstado) {
+  const handleGuardarEstado = async () => {
+    if (!nuevoEstado || !paqueteId) {
       setShowWarning(true);
       return;
     }
-    setShowSuccess(true);
+
+    setIsSavingEstado(true);
+    setShowError(false);
+    setShowSuccess(false);
+
+    try {
+        await historialEstadoService.create({
+            idPaquete: paqueteId,
+            idEstado: parseInt(nuevoEstado),
+            idEmpleado: 1, // Dummy ID as per plan
+            fechaHora: new Date().toISOString().split('T')[0]
+        });
+
+        setShowSuccess(true);
+    } catch (error) {
+        console.error("Error updating status:", error);
+        setErrorMessage("Error al actualizar el estado. Por favor intente de nuevo.");
+        setShowError(true);
+    } finally {
+        setIsSavingEstado(false);
+    }
   };
 
   return (
@@ -358,9 +432,10 @@ export default function EditPackagePage() {
                 </Button>
                 <Button
                   onClick={handleGuardarDireccion}
+                  disabled={isSavingDireccion}
                   className="flex-1 bg-[#2c3e50] hover:bg-[#34495e]"
                 >
-                  Guardar cambios
+                  {isSavingDireccion ? "Guardando..." : "Guardar cambios"}
                 </Button>
               </div>
             </CardContent>
@@ -386,17 +461,20 @@ export default function EditPackagePage() {
                 className="w-full h-10 px-3 py-2 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
               >
                 <option value="">Actualizar Estado</option>
-                <option value="en-ruta">En Ruta</option>
-                <option value="en-bodega">En Bodega</option>
-                <option value="entregado">Entregado</option>
+                {estados.map((estado) => (
+                    <option key={estado.id} value={estado.id}>
+                        {estado.nombreEstado}
+                    </option>
+                ))}
               </select>
             </div>
 
             <Button
               onClick={handleGuardarEstado}
+              disabled={isSavingEstado}
               className="bg-[#2c3e50] hover:bg-[#34495e]"
             >
-              Guardar cambios
+              {isSavingEstado ? "Guardando..." : "Guardar cambios"}
             </Button>
           </CardContent>
         </Card>
