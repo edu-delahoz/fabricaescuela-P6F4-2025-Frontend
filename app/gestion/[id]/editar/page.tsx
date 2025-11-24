@@ -215,7 +215,7 @@ export default function EditPackagePage() {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#3b5998] text-white py-6 px-4">
+      <div className="bg-[#3b5998] text-white py-6 px-4 hc-hero">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-3xl font-bold tracking-wide">
             ACTUALIZACIÓN DE INFORMACIÓN

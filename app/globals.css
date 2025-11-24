@@ -74,6 +74,41 @@
   --sidebar-ring: oklch(0.439 0 0);
 }
 
+.high-contrast {
+  --background: #050505;
+  --foreground: #fefefe;
+  --card: #0b0b0b;
+  --card-foreground: #fefefe;
+  --popover: #0b0b0b;
+  --popover-foreground: #fefefe;
+  --primary: #f7c600;
+  --primary-foreground: #050505;
+  --secondary: #131313;
+  --secondary-foreground: #fefefe;
+  --muted: #111111;
+  --muted-foreground: #d9d9d9;
+  --accent: #1d1d1d;
+  --accent-foreground: #f7c600;
+  --destructive: #ff4d4d;
+  --destructive-foreground: #050505;
+  --border: #f7c600;
+  --input: #f7c600;
+  --ring: #f7c600;
+  --chart-1: #f7c600;
+  --chart-2: #ffd359;
+  --chart-3: #ffe599;
+  --chart-4: #faf089;
+  --chart-5: #fef9c3;
+  --sidebar: #050505;
+  --sidebar-foreground: #fefefe;
+  --sidebar-primary: #f7c600;
+  --sidebar-primary-foreground: #050505;
+  --sidebar-accent: #131313;
+  --sidebar-accent-foreground: #f7c600;
+  --sidebar-border: #f7c600;
+  --sidebar-ring: #f7c600;
+}
+
 @theme inline {
   /* Configurando fuente Inter */
   --font-sans: var(--font-inter);
@@ -140,3 +175,222 @@
 }
 
 /* Removed problematic dropdown positioning styles that were trying to fix Radix UI issues */
+
+.high-contrast-toggle {
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.high-contrast-toggle span {
+  transition: color 0.2s ease;
+}
+
+.high-contrast-toggle--active {
+  border-color: #f7c600;
+  background-color: rgba(5, 5, 5, 0.85);
+  color: #f7c600;
+}
+
+.high-contrast-toggle--active span {
+  color: #f7c600;
+}
+
+.high-contrast-switch [data-slot="switch-thumb"] {
+  background-color: #ffffff;
+}
+
+body.high-contrast .high-contrast-switch [data-slot="switch-thumb"] {
+  background-color: #050505;
+}
+
+body.high-contrast {
+  background-color: #050505;
+  color: #fefefe;
+}
+
+body.high-contrast .transport-bg {
+  background: #050505;
+  border-bottom: 2px solid #f7c600;
+}
+
+body.high-contrast .transport-title {
+  color: #fefefe;
+}
+
+body.high-contrast .high-contrast-toggle {
+  border-color: #f7c600;
+  background-color: rgba(5, 5, 5, 0.9);
+  color: #f7c600;
+}
+
+body.high-contrast .high-contrast-toggle span {
+  color: #f7c600;
+}
+
+body.high-contrast .bg-gray-50,
+body.high-contrast .bg-gray-100,
+body.high-contrast .bg-gray-200 {
+  background-color: #050505 !important;
+  color: #fefefe !important;
+}
+
+body.high-contrast .bg-white,
+body.high-contrast .bg-blue-50,
+body.high-contrast .bg-blue-100,
+body.high-contrast .bg-gray-300 {
+  background-color: #0b0b0b !important;
+  color: #fefefe !important;
+}
+
+body.high-contrast .bg-blue-500,
+body.high-contrast .bg-blue-600,
+body.high-contrast .bg-blue-700,
+body.high-contrast .bg-blue-800,
+body.high-contrast .bg-blue-900,
+body.high-contrast .bg-slate-700,
+body.high-contrast .bg-slate-800,
+body.high-contrast .bg-[#2c3e50],
+body.high-contrast .bg-[#34495e],
+body.high-contrast .bg-[#3b5998],
+body.high-contrast .bg-gradient-to-br {
+  background-image: none !important;
+  background-color: #f7c600 !important;
+  color: #050505 !important;
+}
+
+body.high-contrast .bg-green-100 {
+  background-color: #113b11 !important;
+  color: #c0ffb4 !important;
+}
+
+body.high-contrast .bg-red-100,
+body.high-contrast .bg-red-50 {
+  background-color: #3b1111 !important;
+  color: #ffc4c4 !important;
+}
+
+body.high-contrast .text-gray-400,
+body.high-contrast .text-gray-500,
+body.high-contrast .text-gray-600,
+body.high-contrast .text-gray-700,
+body.high-contrast .text-gray-800,
+body.high-contrast .text-gray-900,
+body.high-contrast .text-black {
+  color: #fefefe !important;
+}
+
+body.high-contrast .text-blue-100,
+body.high-contrast .text-blue-300,
+body.high-contrast .text-blue-600,
+body.high-contrast .text-blue-700,
+body.high-contrast .text-blue-800,
+body.high-contrast .text-blue-900,
+body.high-contrast .text-green-800 {
+  color: #f7c600 !important;
+}
+
+body.high-contrast .border-gray-100,
+body.high-contrast .border-gray-200,
+body.high-contrast .border-gray-300,
+body.high-contrast .border-blue-100,
+body.high-contrast .border-blue-200,
+body.high-contrast .border-blue-500,
+body.high-contrast .border-blue-600,
+body.high-contrast .border-white,
+body.high-contrast .border-b,
+body.high-contrast .border-t,
+body.high-contrast .border-2,
+body.high-contrast .border-4 {
+  border-color: #f7c600 !important;
+}
+
+body.high-contrast .text-red-500,
+body.high-contrast .text-red-700,
+body.high-contrast .text-red-800 {
+  color: #ff8a80 !important;
+}
+
+body.high-contrast .bg-green-500 {
+  background-color: #69ff69 !important;
+  color: #050505 !important;
+}
+
+body.high-contrast .bg-red-600,
+body.high-contrast .bg-red-700 {
+  background-color: #ff4d4d !important;
+  color: #050505 !important;
+}
+
+body.high-contrast .shadow-sm,
+body.high-contrast .shadow-xl,
+body.high-contrast .shadow-2xl {
+  box-shadow: 0 0 0 1px rgba(247, 198, 0, 0.5) !important;
+}
+
+.high-contrast .hc-card-heading {
+  background-color: #f7c600 !important;
+  color: #050505 !important;
+  border-bottom: 1px solid #f7c600;
+}
+
+.high-contrast .hc-card-heading h2 {
+  color: #050505 !important;
+}
+
+.high-contrast .hc-section-title {
+  color: #f7c600 !important;
+}
+
+.high-contrast .hc-hero {
+  background-color: #050505 !important;
+  color: #f7c600 !important;
+  border-bottom: 1px solid #f7c600;
+}
+
+.high-contrast .hc-hero h1,
+.high-contrast .hc-hero-title {
+  color: #f7c600 !important;
+}
+
+.high-contrast .hc-welcome-panel {
+  background-color: #f7c600 !important;
+  color: #050505 !important;
+  background-image: none !important;
+}
+
+.high-contrast .hc-welcome-panel span,
+.high-contrast .hc-welcome-panel h2,
+.high-contrast .hc-welcome-panel p {
+  color: #050505 !important;
+}
+
+.high-contrast .hc-panel {
+  background-color: #050505 !important;
+  color: #fefefe !important;
+  border: 1px solid #f7c600;
+  background-image: none !important;
+}
+
+.high-contrast .hc-panel h1,
+.high-contrast .hc-panel h2,
+.high-contrast .hc-panel p,
+.high-contrast .hc-panel span {
+  color: #fefefe !important;
+}
+
+.high-contrast .hc-primary-button {
+  background-color: #f7c600 !important;
+  color: #050505 !important;
+  border-color: #f7c600 !important;
+}
+
+.high-contrast .hc-primary-button:hover {
+  background-color: #d6a800 !important;
+}
+
+.high-contrast .hc-link-button {
+  color: #f7c600 !important;
+}
+
+.high-contrast .hc-link-button:hover {
+  color: #ffe066 !important;
+}

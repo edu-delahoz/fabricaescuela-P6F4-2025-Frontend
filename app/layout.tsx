@@ -4,6 +4,8 @@ import { Inter } from "next/font/google"
 // import { Analytics } from "@vercel/analytics/next"
 import "./globals.css"
 import { Suspense } from "react"
+import { HighContrastProvider } from "@/components/providers/high-contrast-provider"
+import { HighContrastToggle } from "@/components/high-contrast-toggle"
 
 const inter = Inter({
   subsets: ["latin"],
@@ -25,7 +27,10 @@ export default function RootLayout({
   return (
     <html lang="es">
       <body className={`font-sans ${inter.variable} antialiased`}>
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        <HighContrastProvider>
+          <HighContrastToggle className="fixed top-3 right-3 sm:top-4 sm:right-4 md:top-6 md:right-6 z-50 pointer-events-auto" />
+          <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        </HighContrastProvider>
       </body>
     </html>
   )

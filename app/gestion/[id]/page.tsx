@@ -81,7 +81,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 p-6">
             {/* Destinatario */}
             <Card className="overflow-hidden">
-              <div className="bg-blue-600 text-white py-3 px-4">
+              <div className="bg-blue-600 text-white py-3 px-4 hc-card-heading">
                 <h2 className="text-xl font-semibold text-center">Destinatario</h2>
               </div>
               <CardContent className="p-6 space-y-4">
@@ -118,7 +118,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
 
             {/* Remitente */}
             <Card className="overflow-hidden">
-              <div className="bg-blue-600 text-white py-3 px-4">
+              <div className="bg-blue-600 text-white py-3 px-4 hc-card-heading">
                 <h2 className="text-xl font-semibold text-center">Remitente</h2>
               </div>
               <CardContent className="p-6 space-y-4">
@@ -155,7 +155,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
 
             {/* Datos de envío */}
             <Card className="overflow-hidden">
-              <div className="bg-blue-600 text-white py-3 px-4">
+              <div className="bg-blue-600 text-white py-3 px-4 hc-card-heading">
                 <h2 className="text-xl font-semibold text-center">Datos de envío</h2>
               </div>
               <CardContent className="p-6 space-y-4">
@@ -203,7 +203,7 @@ export default async function PackageDetailPage({ params }: PackageDetailProps) 
           <div className="p-6 pt-0">
             <Card>
               <CardContent className="p-6">
-                <h2 className="text-xl font-semibold text-blue-900 mb-4">Novedades del Envío</h2>
+                <h2 className="text-xl font-semibold text-blue-900 mb-4 hc-section-title">Novedades del Envío</h2>
                 {packageData.updates.length > 0 ? (
                   <div className="space-y-2">
                     {packageData.updates.map((update, index) => (
