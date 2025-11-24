@@ -12,7 +12,7 @@ export class ApiClient {
   }
 
   /**
-   * Realizar una petición autenticada
+   * Realizar una petición autenticada.
    */
   private async request<T>(
     endpoint: string,
