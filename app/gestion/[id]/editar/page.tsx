@@ -7,7 +7,8 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useRouter, useParams } from "next/navigation";
 import { ConfirmationModal } from "@/components/modals/confirmation-modal";
-import { packageService, historialEstadoService, estadoService } from "@/lib/api-client";
+import { packageService, historialEstadoService, estadoService, novedadService } from "@/lib/api-client";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function EditPackagePage() {
   const router = useRouter();
@@ -20,6 +21,7 @@ export default function EditPackagePage() {
   const [isSavingUbicacion, setIsSavingUbicacion] = useState(false);
   const [isSavingDireccion, setIsSavingDireccion] = useState(false);
   const [isSavingEstado, setIsSavingEstado] = useState(false);
+  const [isSavingNovedad, setIsSavingNovedad] = useState(false);
   
   // Data state
   const [paqueteId, setPaqueteId] = useState<number | null>(null);
@@ -69,6 +71,7 @@ export default function EditPackagePage() {
 
   // Status update state
   const [nuevoEstado, setNuevoEstado] = useState("");
+  const [novedadDescripcion, setNovedadDescripcion] = useState("");
 
   const handleVisualizarDireccion = () => {
     const parts = [via, numero, tramo, orientacion, cruce, metros].filter(
@@ -180,10 +183,39 @@ export default function EditPackagePage() {
     }
   };
 
+  const handleGuardarNovedad = async () => {
+    if (!novedadDescripcion.trim() || !paqueteId) {
+      setShowWarning(true);
+      return;
+    }
+
+    setIsSavingNovedad(true);
+    setShowError(false);
+    setShowSuccess(false);
+
+    try {
+      await novedadService.create({
+        idPaquete: paqueteId,
+        descripcion: novedadDescripcion.trim(),
+        tipoNovedad: "REGISTRO",
+        fechaHora: new Date().toISOString(),
+      });
+
+      setNovedadDescripcion("");
+      setShowSuccess(true);
+    } catch (error) {
+      console.error("Error registrando novedad:", error);
+      setErrorMessage("Error al registrar la novedad. Por favor intente de nuevo.");
+      setShowError(true);
+    } finally {
+      setIsSavingNovedad(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <div className="bg-[#3b5998] text-white py-6 px-4">
+      <div className="bg-[#3b5998] text-white py-6 px-4 hc-hero">
         <div className="max-w-7xl mx-auto text-center">
           <h1 className="text-3xl font-bold tracking-wide">
             ACTUALIZACIÓN DE INFORMACIÓN
@@ -442,42 +474,75 @@ export default function EditPackagePage() {
           </Card>
         </div>
 
-        {/* Actualización de Estado */}
-        <Card className="mb-6 border-gray-200 shadow-sm">
-          <CardHeader className="pb-4">
-            <CardTitle className="text-lg font-semibold">
-              Actualización de Estado
-            </CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="max-w-md space-y-2">
-              <Label htmlFor="estado" className="text-sm font-medium">
-                Actualizar Estado
-              </Label>
-              <select
-                id="estado"
-                value={nuevoEstado}
-                onChange={(e) => setNuevoEstado(e.target.value)}
-                className="w-full h-10 px-3 py-2 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              >
-                <option value="">Actualizar Estado</option>
-                {estados.map((estado) => (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {/* Actualización de Estado */}
+          <Card className="border-gray-200 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg font-semibold">
+                Actualización de Estado
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="estado" className="text-sm font-medium">
+                  Actualizar Estado
+                </Label>
+                <select
+                  id="estado"
+                  value={nuevoEstado}
+                  onChange={(e) => setNuevoEstado(e.target.value)}
+                  className="w-full h-10 px-3 py-2 bg-white border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                >
+                  <option value="">Actualizar Estado</option>
+                  {estados.map((estado) => (
                     <option key={estado.id} value={estado.id}>
-                        {estado.nombreEstado}
+                      {estado.nombreEstado}
                     </option>
-                ))}
-              </select>
-            </div>
+                  ))}
+                </select>
+              </div>
 
-            <Button
-              onClick={handleGuardarEstado}
-              disabled={isSavingEstado}
-              className="bg-[#2c3e50] hover:bg-[#34495e]"
-            >
-              {isSavingEstado ? "Guardando..." : "Guardar cambios"}
-            </Button>
-          </CardContent>
-        </Card>
+              <Button
+                onClick={handleGuardarEstado}
+                disabled={isSavingEstado}
+                className="w-full bg-[#2c3e50] hover:bg-[#34495e]"
+              >
+                {isSavingEstado ? "Guardando..." : "Guardar cambios"}
+              </Button>
+            </CardContent>
+          </Card>
+
+          {/* Registro de Novedades */}
+          <Card className="border-gray-200 shadow-sm">
+            <CardHeader className="pb-4">
+              <CardTitle className="text-lg font-semibold">
+                Registro de Novedades
+              </CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="novedad" className="text-sm font-medium">
+                  Registra aspectos importantes
+                </Label>
+                <Textarea
+                  id="novedad"
+                  value={novedadDescripcion}
+                  onChange={(e) => setNovedadDescripcion(e.target.value)}
+                  placeholder="Registra aspectos importantes"
+                  className="bg-white min-h-[120px] resize-none"
+                />
+              </div>
+
+              <Button
+                onClick={handleGuardarNovedad}
+                disabled={isSavingNovedad}
+                className="w-full bg-[#2c3e50] hover:bg-[#34495e]"
+              >
+                {isSavingNovedad ? "Guardando..." : "Guardar"}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
 
         {/* Volver button */}
         <div className="flex justify-start">

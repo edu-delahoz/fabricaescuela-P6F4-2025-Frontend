@@ -223,7 +223,7 @@ export default function ManagementPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-blue-600 text-white py-6 px-4">
+      <div className="bg-blue-600 text-white py-6 px-4 hc-hero">
         <div className="max-w-6xl mx-auto text-center">
           <h1 className="text-3xl font-bold tracking-wide">
             GESTIÓN DE PAQUETES
@@ -255,7 +255,7 @@ export default function ManagementPage() {
                   />
                 </div>
                 <Button
-                  className="h-12 px-8 bg-slate-700 hover:bg-slate-800 text-white"
+                  className="h-12 px-8 bg-slate-700 hover:bg-slate-800 text-white hc-primary-button"
                   onClick={handleSearch}
                   disabled={isSearching || isLoading}
                 >
@@ -309,7 +309,7 @@ export default function ManagementPage() {
                     <div className="flex gap-3">
                       <Button
                         variant="ghost"
-                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50"
+                        className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 hc-link-button"
                         onClick={() =>
                           router.push(`/gestion/${shipment.codigoPaquete}`)
                         }
@@ -317,7 +317,7 @@ export default function ManagementPage() {
                         Consultar
                       </Button>
                       <Button
-                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                        className="bg-blue-600 hover:bg-blue-700 text-white hc-primary-button"
                         onClick={() =>
                           router.push(
                             `/gestion/${shipment.codigoPaquete}/editar`
@@ -355,7 +355,7 @@ export default function ManagementPage() {
               <Link href="/">
                 <Button
                   variant="outline"
-                  className="px-8 bg-gray-200 hover:bg-gray-300"
+                  className="px-8 bg-gray-200 hover:bg-gray-300 hc-primary-button"
                 >
                   Salir
                 </Button>

@@ -111,7 +111,7 @@ export default function LoginPage() {
               type="submit"
               disabled={isLoading}
               onClick={handleLogin}
-              className="w-full h-12 bg-blue-700 hover:bg-blue-800 text-white font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full h-12 bg-blue-700 hover:bg-blue-800 text-white font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed hc-primary-button"
             >
               {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
             </Button>
@@ -119,7 +119,7 @@ export default function LoginPage() {
         </div>
 
         {/* Panel derecho - Bienvenida */}
-        <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-700 p-8 md:p-12 flex flex-col justify-center items-center text-white">
+        <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-700 p-8 md:p-12 flex flex-col justify-center items-center text-white hc-welcome-panel">
           <div className="text-center">
             <h2 className="text-4xl font-bold mb-4">Bienvenido!</h2>
             <p className="text-lg leading-relaxed mb-8">
