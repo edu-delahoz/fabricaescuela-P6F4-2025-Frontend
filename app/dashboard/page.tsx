@@ -9,7 +9,7 @@ export default function DashboardPage() {
       <div className="w-full max-w-4xl bg-white rounded-lg shadow-xl overflow-hidden">
         <div className="grid md:grid-cols-2">
           {/* Left side - Menu */}
-          <div className="bg-gradient-to-br from-blue-400 to-blue-500 p-12 flex flex-col items-center justify-center gap-8">
+          <div className="bg-gradient-to-br from-blue-400 to-blue-500 p-12 flex flex-col items-center justify-center gap-8 hc-panel">
             {/* Package Icon */}
             <div className="w-24 h-24 border-4 border-white rounded-lg flex items-center justify-center">
               <svg className="w-16 h-16 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -25,7 +25,7 @@ export default function DashboardPage() {
             {/* Menu Buttons */}
             <div className="w-full max-w-xs space-y-4">
               <Link href="/gestion" className="block">
-                <Button className="w-full bg-white text-gray-900 hover:bg-gray-100 h-12 text-base font-medium flex items-center justify-center gap-2">
+                <Button className="w-full bg-white text-gray-900 hover:bg-gray-100 h-12 text-base font-medium flex items-center justify-center gap-2 hc-primary-button">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -45,7 +45,7 @@ export default function DashboardPage() {
               </Link>
 
               <Link href="/reporte-incidencias" className="block">
-                <Button className="w-full bg-white text-gray-900 hover:bg-gray-100 h-12 text-base font-medium flex items-center justify-center gap-2">
+                <Button className="w-full bg-white text-gray-900 hover:bg-gray-100 h-12 text-base font-medium flex items-center justify-center gap-2 hc-primary-button">
                   <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path
                       strokeLinecap="round"
@@ -61,7 +61,7 @@ export default function DashboardPage() {
           </div>
 
           {/* Right side - Welcome message */}
-          <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-12 flex flex-col items-center justify-center text-white text-center">
+          <div className="bg-gradient-to-br from-blue-600 to-blue-700 p-12 flex flex-col items-center justify-center text-white text-center hc-welcome-panel">
             <h1 className="text-4xl font-bold mb-4">Bienvenido!</h1>
             <h2 className="text-xl font-semibold mb-6 tracking-wide">AUXLIAR LOGÍSTICO</h2>
             <p className="text-blue-100 leading-relaxed max-w-sm">

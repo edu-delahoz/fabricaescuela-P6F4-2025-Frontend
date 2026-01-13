@@ -38,7 +38,7 @@ export default function InventarioPage() {
                 <Button
                   onClick={handleGenerateSummary}
                   disabled={showSummary}
-                  className="w-full bg-blue-900 hover:bg-blue-800 text-white"
+                  className="w-full bg-blue-900 hover:bg-blue-800 text-white hc-primary-button"
                 >
                   {showSummary ? "Generando..." : "Generar"}
                 </Button>
@@ -131,7 +131,7 @@ export default function InventarioPage() {
 
           {/* Right Content - Filter Section */}
           <div>
-            <div className="bg-blue-900 text-white py-6 px-8 rounded-t-lg">
+            <div className="bg-blue-900 text-white py-6 px-8 rounded-t-lg hc-hero">
               <h1 className="text-3xl font-bold text-center tracking-wide">FILTRADO DE INVENTARIO</h1>
             </div>
             <Card className="rounded-t-none min-h-[600px]">

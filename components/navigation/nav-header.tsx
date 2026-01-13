@@ -1,8 +1,25 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import { Package, Settings, LayoutDashboard, Archive } from "lucide-react"
+"use client";
+
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import {
+  Package,
+  Settings,
+  LayoutDashboard,
+  Archive,
+  LogOut,
+} from "lucide-react";
+import { AuthService } from "@/lib/auth";
 
 export function NavHeader() {
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    await AuthService.logout();
+    router.push("/login");
+  };
+
   return (
     <nav className="bg-white shadow-sm border-b">
       <div className="max-w-6xl mx-auto px-4 py-3">
@@ -37,9 +54,17 @@ export function NavHeader() {
                 Inventario
               </Button>
             </Link>
+            <Button
+              variant="ghost"
+              className="flex items-center gap-2 text-red-600 hover:text-red-700 hover:bg-red-50"
+              onClick={handleLogout}
+            >
+              <LogOut className="h-4 w-4" />
+              Cerrar Sesión
+            </Button>
           </div>
         </div>
       </div>
     </nav>
-  )
+  );
 }

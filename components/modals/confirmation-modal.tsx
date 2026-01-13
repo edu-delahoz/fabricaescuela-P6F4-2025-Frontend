@@ -1,24 +1,24 @@
-"use client"
+"use client";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 
 interface ConfirmationModalProps {
   isOpen: boolean
   onClose: () => void
+  onConfirm?: () => void
   title: string
   message: string
   type?: "success" | "error" | "warning"
+  confirmText?: string
+  cancelText?: string
 }
+
+//test
 
 export function ConfirmationModal({ isOpen, onClose, title, message, type = "success" }: ConfirmationModalProps) {
   if (!isOpen) return null
 
-  const buttonColor =
-    type === "success"
-      ? "bg-blue-600 hover:bg-blue-700"
-      : type === "error"
-        ? "bg-red-600 hover:bg-red-700"
-        : "bg-amber-600 hover:bg-amber-700"
+  const buttonColor = type === "success" ? "bg-blue-600 hover:bg-blue-700" : "bg-red-600 hover:bg-red-700"
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
@@ -32,5 +32,5 @@ export function ConfirmationModal({ isOpen, onClose, title, message, type = "suc
         </div>
       </div>
     </div>
-  )
+  );
 }

@@ -1,30 +1,59 @@
-"use client"
+"use client";
 
-import type React from "react"
+import type React from "react";
 
-import { useState } from "react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Package } from "lucide-react"
-import { ConfirmationModal } from "@/components/modals/confirmation-modal"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Package } from "lucide-react";
+import { ConfirmationModal } from "@/components/modals/confirmation-modal";
+import { AuthService } from "@/lib/auth";
 
 export default function LoginPage() {
-  const [email, setEmail] = useState("")
-  const [password, setPassword] = useState("")
-  const [showError, setShowError] = useState(false)
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(
+    "Usuario o contraseña inválidos, intenta de nuevo"
+  );
+  const [isLoading, setIsLoading] = useState(false);
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault()
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-    // Simulación de validación - aquí iría la lógica real de autenticación
     if (!email || !password) {
-      setShowError(true)
-      return
+      setErrorMessage("Por favor, completa todos los campos");
+      setShowError(true);
+      return;
     }
 
-    // Por ahora, cualquier intento muestra el error para demostrar la funcionalidad
-    setShowError(true)
-  }
+    setIsLoading(true);
+    setShowError(false);
+
+    try {
+      await AuthService.login({
+        username: email,
+        password: password,
+      });
+
+      // Redirigir al dashboard después del login exitoso
+      router.push("/dashboard");
+    } catch (error) {
+      // Mostrar error al usuario
+      const message =
+        error instanceof Error ? error.message : "Error al iniciar sesión";
+      setErrorMessage(
+        message.includes("Error")
+          ? message
+          : "Usuario o contraseña inválidos, intenta de nuevo"
+      );
+      setShowError(true);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center p-4">
@@ -37,14 +66,17 @@ export default function LoginPage() {
               <Package className="h-8 w-8 text-blue-600" />
               <h1 className="text-2xl font-bold text-gray-900">CourierSync</h1>
             </div>
-            <h2 className="text-xl font-semibold text-gray-800">Inicia sesión</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              Inicia sesión
+            </h2>
           </div>
 
-          {/* Formulario */}
-          <form onSubmit={handleLogin} className="space-y-6">
-            {/* Campo Email */}
+          <form className="space-y-6">
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email
               </label>
               <Input
@@ -59,7 +91,10 @@ export default function LoginPage() {
 
             {/* Campo Contraseña */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Contraseña
               </label>
               <Input
@@ -72,18 +107,19 @@ export default function LoginPage() {
               />
             </div>
 
-            {/* Botón de inicio de sesión */}
             <Button
               type="submit"
-              className="w-full h-12 bg-blue-700 hover:bg-blue-800 text-white font-medium text-base"
+              disabled={isLoading}
+              onClick={handleLogin}
+              className="w-full h-12 bg-blue-700 hover:bg-blue-800 text-white font-medium text-base disabled:opacity-50 disabled:cursor-not-allowed hc-primary-button"
             >
-              Iniciar sesión
+              {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
             </Button>
           </form>
         </div>
 
         {/* Panel derecho - Bienvenida */}
-        <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-700 p-8 md:p-12 flex flex-col justify-center items-center text-white">
+        <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-700 p-8 md:p-12 flex flex-col justify-center items-center text-white hc-welcome-panel">
           <div className="text-center">
             <h2 className="text-4xl font-bold mb-4">Bienvenido!</h2>
             <p className="text-lg leading-relaxed mb-8">
@@ -106,9 +142,9 @@ export default function LoginPage() {
         isOpen={showError}
         onClose={() => setShowError(false)}
         title="Error"
-        message="Usuario o contraseña inválidos, intenta de nuevo"
+        message={errorMessage}
         type="error"
       />
     </div>
-  )
+  );
 }
